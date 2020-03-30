@@ -1,4 +1,4 @@
-﻿#include<iostream>
+﻿#include<iostream>//blue
 using namespace std;
 #include<stdlib.h>
 #include<math.h>
