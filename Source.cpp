@@ -6,16 +6,17 @@ using namespace std;
 #include<stdio.h>
 #include<conio.h>
 #include<time.h>
-#include "console.h"
+#include<string.h>
+#include "console.cpp"
 #define chieudai 85
 #define chieurong 25
 int A[100][100];
 int Y;//toạ độ khi full hàng
 int a1, b1,a2,b2;//tọa độ đầu hàng và cuối hàng
-int x1, x2;//tọa độ 2 bên cạnh  bản
+int x1, x2;//tọa độ 2 bên cạnh  bảng
 typedef struct highscore
 {
-    char name[30];
+    char* name;
     int score;
     int time;
 }hs;
@@ -33,6 +34,7 @@ void xoah(int Y);
 bool kthang(int& Y);
 void goilaihang();
 void Nocursortype();
+void menu();
 int main()
 {
     hs ngc;
@@ -41,6 +43,9 @@ int main()
     srand((int)time(0));
     int y = 1,x=1;
     Nocursortype();
+    menu();
+    system("pause");
+    system("cls");
     bang(a2,b2,a1,b1);
     goi(a1, b1);
     goi(a2, b2);
@@ -870,4 +875,44 @@ void Nocursortype()//hàm ẩn con chuột trên màn hình console
     Info.bVisible = FALSE;
     Info.dwSize = 20;
     SetConsoleCursorInfo(GetStdHandle(STD_OUTPUT_HANDLE), &Info);
+}
+void menu()
+{
+    int x = 10 , y = 10,k;
+   
+    while(1)
+    {
+        system("cls");
+        gotoXY(x,y);
+        cout<<"=========================================================";gotoXY(x,y+1);
+        cout<<"=                     GAME XEP GACH                     =";gotoXY(x,y+2);
+        cout<<"=========================================================";gotoXY(x,y+3);
+        cout<<"=                                                       =";gotoXY(x,y+4);
+        cout<<"=                                                       =";gotoXY(x,y+5);
+        cout<<"=                      1.PLAY GAME                      =";gotoXY(x,y+6);
+        cout<<"=                      2.HIGH SCORE                     =";gotoXY(x,y+7);
+        cout<<"=                      3.EXIT GAME                      =";gotoXY(x,y+8);
+        cout<<"=                                                       =";gotoXY(x,y+9);
+        cout<<"=                                                       =";gotoXY(x,y+10);
+        cout<<"=                                                       =";gotoXY(x,y+11);
+        cout<<"=========================================================";gotoXY(x,y+12);
+        cin>>k;
+        switch(k)
+        case 1:
+            break;
+    }
+}
+void highscore(hs ngc )
+{
+    
+}
+void highscoreN(hs ngc)
+{
+    int x = 20,y = 10;
+    ngc.name=new char[30];
+    gotoXY(x,y);
+    cout<<"MY NAME IS: ";
+    gotoXY(x+12,y);
+    fgets(ngc.name,30,stdin);
+
 }
