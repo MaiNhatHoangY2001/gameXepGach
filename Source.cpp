@@ -7,6 +7,7 @@ using namespace std;
 #include<conio.h>
 #include<time.h>
 #include<string.h>
+#include<fstream>
 #include "console.cpp"
 #define chieudai 85
 #define chieurong 25
@@ -14,6 +15,7 @@ int A[100][100];
 int Y;//toạ độ khi full hàng
 int a1, b1,a2,b2;//tọa độ đầu hàng và cuối hàng
 int x1, x2;//tọa độ 2 bên cạnh  bảng
+
 typedef struct highscore
 {
     char* name;
@@ -35,6 +37,8 @@ bool kthang(int& Y);
 void goilaihang();
 void Nocursortype();
 void menu();
+void highscoreN(hs &ngc);
+void highscore(hs ngc );
 int main()
 {
     hs ngc;
@@ -43,14 +47,16 @@ int main()
     srand((int)time(0));
     int y = 1,x=1;
     Nocursortype();
-    menu();
+    // menu();
     system("pause");
     system("cls");
     bang(a2,b2,a1,b1);
     goi(a1, b1);
     goi(a2, b2);
+    const clock_t begin_time = clock();
     while (y!=3)
     {
+        
         int k = rand() % 7 + 1;
         move(k,y,x);
         goilaihang();
@@ -66,8 +72,11 @@ int main()
         x = (chieudai - 35) / 2, y = 0;
         gotoXY(x, y);
         cout << "YOU LOSE" << endl;
-        cout << ngc.score << endl;
+        ngc.time= int( clock () - begin_time ) /  CLOCKS_PER_SEC;
+        highscoreN(ngc);
+        highscore(ngc);
     } 
+    delete ngc.name;
     system("pause");
 }
 void hinh(int& x, int& y, int k)
@@ -904,9 +913,19 @@ void menu()
 }
 void highscore(hs ngc )
 {
+    fstream f;
+    char b[30];
+    f.open("HighScore.txt",ios::in);
+    while(!f.eof())
+    {
     
+        f.getline(b,30);
+        cout<<b<<endl;
+    }
+    
+    f.close();
 }
-void highscoreN(hs ngc)
+void highscoreN(hs &ngc)
 {
     int x = 20,y = 10;
     ngc.name=new char[30];
@@ -914,5 +933,4 @@ void highscoreN(hs ngc)
     cout<<"MY NAME IS: ";
     gotoXY(x+12,y);
     fgets(ngc.name,30,stdin);
-
 }
