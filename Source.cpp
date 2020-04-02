@@ -8,6 +8,7 @@ using namespace std;
 #include<time.h>
 #include<string.h>
 #include<fstream>
+#include<iomanip>
 #include "console.cpp"
 #define chieudai 85
 #define chieurong 25
@@ -18,9 +19,8 @@ int x1, x2;//tọa độ 2 bên cạnh  bảng
 
 typedef struct highscore
 {
-    char* name;
+    char name[30];
     int score;
-    int time;
 }hs;
 void play(int& x, int& y, int &k, int& t);
 void goi(int a, int b);
@@ -37,12 +37,14 @@ bool kthang(int& Y);
 void goilaihang();
 void Nocursortype();
 void menu();
-void highscoreN(hs &ngc);
-void highscore(hs ngc );
+void highscoreN(hs ngc[]);
+void highscore(hs ngc[]);
+void highscoret(hs ngc[]);
+void xuaths(hs ngc[]);
 int main()
 {
-    hs ngc;
-    ngc.score = 0;
+    hs ngc[6];
+    ngc[5].score=0;
     resizeConsole(80, 40);
     srand((int)time(0));
     int y = 1,x=1;
@@ -53,7 +55,6 @@ int main()
     bang(a2,b2,a1,b1);
     goi(a1, b1);
     goi(a2, b2);
-    const clock_t begin_time = clock();
     while (y!=3)
     {
         
@@ -63,7 +64,7 @@ int main()
         if (kthang(Y))
         {
             xoah(Y);
-            ngc.score += 100;
+            ngc[5].score += 100;
         }
     }
     if (y == 3)
@@ -72,11 +73,9 @@ int main()
         x = (chieudai - 35) / 2, y = 0;
         gotoXY(x, y);
         cout << "YOU LOSE" << endl;
-        ngc.time= int( clock () - begin_time ) /  CLOCKS_PER_SEC;
         highscoreN(ngc);
         highscore(ngc);
     } 
-    delete ngc.name;
     system("pause");
 }
 void hinh(int& x, int& y, int k)
@@ -911,26 +910,74 @@ void menu()
             break;
     }
 }
-void highscore(hs ngc )
+void highscore(hs ngc[] )
 {
-    fstream f;
-    char b[30];
-    f.open("HighScore.txt",ios::in);
-    while(!f.eof())
-    {
     
-        f.getline(b,30);
-        cout<<b<<endl;
-    }
-    
-    f.close();
+    gotoXY(1,5);
+    setColor(6);
+    cout<<"===============================HIGH SCORE===============================";
+    setColor(15);
+    xuaths(ngc);
+    gotoXY(1,13);
+    setColor(6);
+    cout<<"===============================HIGH SCORE===============================";
+    setColor(15);
+   
 }
-void highscoreN(hs &ngc)
+void highscoreN(hs ngc[])
 {
-    int x = 20,y = 10;
-    ngc.name=new char[30];
+    int x = 18,y = 3;
     gotoXY(x,y);
     cout<<"MY NAME IS: ";
     gotoXY(x+12,y);
-    fgets(ngc.name,30,stdin);
+    fgets(ngc[5].name,30,stdin);
+    fstream f;
+    int j=0;
+    f.open("HighScore.txt",ios::in);
+    while(!f.eof())
+    {
+        f>>ngc[j].score;
+        f>>ngc[j].name;
+        j++;
+        if(j==6)break;
+    }
+    for(int i=0;i < 4;i++)
+    {
+        for(int j=1;j<5;j++)
+        {
+            if(ngc[i].score<ngc[j].score)
+            {
+                ngc[6]=ngc[j];
+                ngc[j]=ngc[i];
+                ngc[i]=ngc[6];
+            }
+        }
+        
+    }
+    highscoret(ngc);
+}
+void highscoret(hs ngc[])
+{
+    fstream f;
+    f.open("HighScore.txt",ios::out);
+    for(int i=0; i < 5;i++ )
+    {
+        f<<ngc[i].score;
+        f<<ngc[i].name;
+        f<<endl;
+        i++;
+    }
+}
+void xuaths(hs ngc[])
+{
+    int a;
+    char b[30];
+    fstream f;
+    f.open("HighScore.txt",ios::in);
+    while(!f.eof())
+    {
+        f>>a;
+        f>>b;
+        cout<<b<<" "<<a<<endl;
+    }
 }
