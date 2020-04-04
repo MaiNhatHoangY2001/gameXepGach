@@ -22,64 +22,68 @@ typedef struct highscore
     char name[30];
     int score;
 }hs;
-void play(int& x, int& y, int &k, int& t);
+void play(int& x, int& y,int &k,int& t);
 void goi(int a, int b);
 void hinh(int& x, int& y, int k);
 void xoa(int x, int y,int k);
 void bang(int& a2, int& b2, int& a1, int& b1);
 void move(int k,int &y,int &x);
-void goi(int a, int b);
 void len(int& k);
 bool kt(int x, int y, int k);
-void dichuyenh(int Y);
-void xoah(int Y);
-bool kthang(int& Y);
+void dichuyenh();
+void xoah();
+bool kthang(int &Y);
 void goilaihang();
+void reset(int A[100][100],int &Y,int &a1,int &b1,int &a2 ,int &b2);
 void Nocursortype();
-void menu();
+void menu(hs ngc[]);
 void highscoreN(hs ngc[]);
 void highscore(hs ngc[]);
 void highscoret(hs ngc[]);
 void xuaths(hs ngc[]);
 int main()
 {
-    hs ngc[6];
-    ngc[5].score=0;
+    hs ngc[8];
     resizeConsole(80, 40);
     srand((int)time(0));
-    int y = 1,x=1;
     Nocursortype();
-    // menu();
-    system("pause");
-    system("cls");
-    bang(a2,b2,a1,b1);
-    goi(a1, b1);
-    goi(a2, b2);
-    while (y!=3)
-    {
-        
-        int k = rand() % 7 + 1;
-        move(k,y,x);
-        goilaihang();
-        if (kthang(Y))
-        {
-            xoah(Y);
-            ngc[5].score += 100;
-        }
-    }
-    if (y == 3)
-    {
+    again:
+        reset(A,Y,a1,b1,a2,b2);
+        ngc[5].score=1000;
+        int y = 1,x=1;
+        menu(ngc);
         system("cls");
-        x = (chieudai - 35) / 2, y = 0;
-        gotoXY(x, y);
-        cout << "YOU LOSE" << endl;
-        highscoreN(ngc);
-        highscore(ngc);
-    } 
+        bang(a2,b2,a1,b1);
+        goi(a1, b1);
+        goi(a2, b2);
+        while (y!=3)
+        {
+        
+            int k = rand() % 7 + 1;
+            move(k,y,x);
+            goilaihang();
+            if (kthang(Y))
+            {
+                xoah();
+                ngc[5].score += 100;
+            }
+        }
+        if (y == 3)
+        {
+            system("cls");
+            x = (chieudai - 35) / 2, y = 0;
+            gotoXY(x, y);
+            cout << "YOU LOSE" << endl;
+            highscoreN(ngc);
+            highscore(ngc);
+            system("pause");
+            goto again;
+        }    
     system("pause");
 }
+//hàm in hình
 void hinh(int& x, int& y, int k)
-{//hàm in hình
+{
     switch (k)
     {
         case 1://thanh ngang
@@ -260,8 +264,9 @@ void hinh(int& x, int& y, int k)
             break;
     }
 }
+//hàm xóa
 void xoa(int x, int y,int k)
-{//hàm xóa
+{
     switch (k)
     {
         case 1:
@@ -401,8 +406,9 @@ void xoa(int x, int y,int k)
     }
     
 }
+//hàm tạo bảng
 void bang(int &a2,int &b2,int &a1,int &b1)
- {//hàm tạo bảng
+ {
      int x = (chieudai - 35) / 2, y = 0;
      a1 = x,b1 = y;
      gotoXY(x, y);
@@ -426,6 +432,7 @@ void bang(int &a2,int &b2,int &a1,int &b1)
      a2 = x, b2 = y;
      x1 = x+1; x2 = x + 30;
  }
+//hàm di chuyển
 void move(int k,int &y,int &x)
  { 
      int t=171;//thời gian
@@ -581,16 +588,18 @@ void move(int k,int &y,int &x)
          
      }
  }
+//hàm gọi phần tử mảng là -1
 void goi(int a, int b)
- {//hàm gọi phần tử mảng là -1
+ {
      for (int i = 0; i < 35; i++)
      {
          A[a][b] = -1;
          ++a;
      }
  }
+//hàm chạy trò chơi
 void play(int& x, int& y,int &k,int& t)
-{//hàm chạy
+{
     xoa(x, y,k);
     hinh(x, y, k);//in hình
     
@@ -630,6 +639,7 @@ void play(int& x, int& y,int &k,int& t)
         }
     }
 }
+//hàm thay đổi hình khi ấn lên
 void len(int& k)
 {
     switch (k)
@@ -695,8 +705,9 @@ void len(int& k)
         break;
     }
 }
+//kiểm tra xem trong mảng có -1 ko
 bool kt(int x, int y, int k)
-{//kiểm tra xem một trong dâu chấm có -1 ko
+{
     switch (k)
     {
         case 1://thanh ngang
@@ -802,8 +813,9 @@ bool kt(int x, int y, int k)
                 return 0;
     }
 }
+//kiểm tra hàng có đầy hay ko
 bool kthang(int &Y)
-{//kiểm tra hàng có đầy hay ko
+{
     for (int i = b2-1; i >4; i--)//bắt đầu từ dưới kiểm tra lên
     {
         int s = 0;
@@ -822,8 +834,9 @@ bool kthang(int &Y)
     }
     return 0;
 }
-void xoah(int Y)
-{//xóa hàng
+//xóa hàng
+void xoah()
+{
     for (int i = a2 + 1; i < (a2 + 33); i++)
     {
         A[i][Y] = 0;
@@ -832,10 +845,11 @@ void xoah(int Y)
         cout << "=";
         setColor(15);
     }
-    dichuyenh(Y);
+    dichuyenh();
 }
-void dichuyenh(int Y)
-{//di chuyển hàng trên khi xóa hàng dưới
+//di chuyển hàng trên khi xóa hàng dưới
+void dichuyenh()
+{
     for (int i = Y - 1; i > 4; i--)
     {
         for (int j = a2 + 1; j < (a2 + 33); j++)
@@ -855,8 +869,9 @@ void dichuyenh(int Y)
         }
     }
 }
+//hàm gọi lại phần tử -1 trong bảng
 void goilaihang()
-{//hàm gọi lại phần tử =
+{
     for (int i = b2-1; i > 1; i--)//bắt đầu từ dưới kiểm tra lên
     {
         for (int j = a2 + 1; j < (a2 + 33); j++)//từ trái qua phải
@@ -877,18 +892,20 @@ void goilaihang()
        
     }
 }
-void Nocursortype()//hàm ẩn con chuột trên màn hình console
+//hàm ẩn con chuột trên màn hình console
+void Nocursortype()
 {
     CONSOLE_CURSOR_INFO Info;
     Info.bVisible = FALSE;
     Info.dwSize = 20;
     SetConsoleCursorInfo(GetStdHandle(STD_OUTPUT_HANDLE), &Info);
 }
-void menu()
+//menu trò chơi khi vào
+void menu(hs ngc[])
 {
-    int x = 10 , y = 10,k;
-   
-    while(1)
+    int x = 10 , y = 10,key;
+    bool k = TRUE;
+    while(k)
     {
         system("cls");
         gotoXY(x,y);
@@ -904,15 +921,30 @@ void menu()
         cout<<"=                                                       =";gotoXY(x,y+10);
         cout<<"=                                                       =";gotoXY(x,y+11);
         cout<<"=========================================================";gotoXY(x,y+12);
-        cin>>k;
-        switch(k)
-        case 1:
-            break;
+        cout<<"nhap lua chon: ";gotoXY(x+15,y+12);
+        cin>>key;
+        switch(key)
+        {
+            case 1:
+                k=FALSE;
+                break;
+            case 2:
+                system("cls");
+                highscore(ngc);
+                system("pause");
+                break;
+            case 3:
+
+                exit(0);
+                break;
+        }
+
+
     }
 }
+// hàm xuất điểm
 void highscore(hs ngc[] )
 {
-    
     gotoXY(1,5);
     setColor(6);
     cout<<"===============================HIGH SCORE===============================";
@@ -924,26 +956,27 @@ void highscore(hs ngc[] )
     setColor(15);
    
 }
+//hàm nhập và sắp xếp điểm từ tệp HighScore.txt qua struct ngc
 void highscoreN(hs ngc[])
 {
     int x = 18,y = 3;
     gotoXY(x,y);
     cout<<"MY NAME IS: ";
     gotoXY(x+12,y);
+    fflush(stdin);
     fgets(ngc[5].name,30,stdin);
+    int k=0;
     fstream f;
-    int j=0;
     f.open("HighScore.txt",ios::in);
-    while(!f.eof())
-    {
-        f>>ngc[j].score;
-        f>>ngc[j].name;
-        j++;
-        if(j==6)break;
+    while(!f.eof()&&k<5)
+    {//lấy điểm từ tệp vào ngc
+        f>>ngc[k].score;
+        f.getline(ngc[k].name,30);
+        k++;
     }
-    for(int i=0;i < 4;i++)
-    {
-        for(int j=1;j<5;j++)
+    for(int i=0;i <= 4;i++)
+    {//sắp xếp từ cao về thấp
+        for(int j=i+1;j <= 5;j++)
         {
             if(ngc[i].score<ngc[j].score)
             {
@@ -955,7 +988,9 @@ void highscoreN(hs ngc[])
         
     }
     highscoret(ngc);
+    f.close();
 }
+//hàm nhập điểm vào tệp HighScore.txt
 void highscoret(hs ngc[])
 {
     fstream f;
@@ -965,19 +1000,37 @@ void highscoret(hs ngc[])
         f<<ngc[i].score;
         f<<ngc[i].name;
         f<<endl;
-        i++;
     }
+    f.close();
 }
+//hàm xuất điểm trong tệp HighScore.txt
 void xuaths(hs ngc[])
 {
-    int a;
+    int a,k=0;
     char b[30];
     fstream f;
     f.open("HighScore.txt",ios::in);
-    while(!f.eof())
+    while(!f.eof()&&k<5)
     {
         f>>a;
-        f>>b;
-        cout<<b<<" "<<a<<endl;
+        f.getline(b,30);
+        cout<<endl;
+        cout<<b<<" "<<a;
+        k++;
     }
+    f.close();
+}
+//hàm reset lại khi chơi lại
+void reset(int A[100][100],int &Y,int &a1,int &b1,int &a2 ,int &b2)
+{
+    for(int i=0;i<100;i++)
+    {
+        for(int j=0;j<100;j++)
+        {
+            A[i][j]=0;
+        }
+    }
+    Y=0;
+    a1=0;a2=0;
+    b1=0;b2=0;
 }
