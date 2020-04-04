@@ -49,7 +49,7 @@ int main()
     Nocursortype();
     again:
         reset(A,Y,a1,b1,a2,b2);
-        ngc[5].score=1000;
+        ngc[5].score=0;
         int y = 1,x=1;
         menu(ngc);
         system("cls");
