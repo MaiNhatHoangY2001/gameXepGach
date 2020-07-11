@@ -44,6 +44,7 @@ void xuaths(hs ngc[]);
 int main()
 {
     hs ngc[8];
+    system("title xep-gach-MaiNhatHoang");
     resizeConsole(80, 40);
     srand((int)time(0));
     Nocursortype();
